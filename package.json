@@ -1,0 +1,20 @@
+{
+    "name": "com.insaneone.taileffect",
+    "author": "InsaneOne",
+    "displayName": "Tail Effect",
+    "description": "Tail Effect is an effect to make 2d/3d tails from segments. By InsaneOne, for Unity (C#). MIT License.",
+    "unity": "2019.1",
+    "version": "0.0.1",
+    "keywords": [
+        "tailfx",
+        "taileffect",
+        "tail",
+        "effects",
+        "insaneone"
+    ],
+    "dependencies": {},
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/OlegDzhuraev/TailEffect.git"
+    }
+}
