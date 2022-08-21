@@ -3,6 +3,8 @@ Tail effect for Unity. Allows to create tails from prefab segments, 2D and 3D wo
 
 ![Tail Effect](https://media.giphy.com/media/EL5dXX61usfsWkYYYd/giphy.gif)
 
+This is early version, changes is coming in future.
+
 ## How to install
 You can install plugin via Unity Package Manager as git package from github repository:
 
