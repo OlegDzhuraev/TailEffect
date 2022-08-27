@@ -14,7 +14,7 @@ namespace InsaneOne.TailEffect
         [SerializeField] GameObject headPrefab;
         [SerializeField] GameObject segmentPrefab;
         [SerializeField] GameObject tailPrefab;
-        [SerializeField] int segments = 3;
+        [SerializeField, Range(1, 100)] int segments = 3;
 
         [SerializeField] TailStyle style = TailStyle.Stretchy;
         [SerializeField] TailAxis followAxis = TailAxis.ThreeD;
@@ -30,12 +30,11 @@ namespace InsaneOne.TailEffect
         void Start()
         {
             head = MakePart(headPrefab);
-            Parts.Add(head);
 
             for (var i = 0; i < segments; i++)
-                Parts.Add(MakePart(segmentPrefab));
+                MakePart(segmentPrefab);
 
-            Parts.Add(MakePart(tailPrefab));
+            MakePart(tailPrefab);
             
             Loaded?.Invoke();
         }
@@ -75,7 +74,13 @@ namespace InsaneOne.TailEffect
             }
         }
         
-        Transform MakePart(GameObject prefab) => Instantiate(prefab, transform.position, Quaternion.identity).transform;
+        Transform MakePart(GameObject prefab)
+        {
+            var part = Instantiate(prefab, transform.position, Quaternion.identity).transform;
+            Parts.Add(part);
+            
+            return part;
+        }
 
         Vector3 GetDirection(Transform tr)
         {
