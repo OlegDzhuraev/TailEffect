@@ -25,7 +25,9 @@ Check TailFxExample scene for more info.
 
 ## Other features
 ### Tail color tint
-With **TailColorTint** component you can assign color gradient, which be applied to the mesh renderers of tail by length.
+
+With **TailColorTint** component you can assign color gradient, which will be applied to the mesh renderers of tail by length.
+
 ![Tail color tint](https://media.giphy.com/media/MfzAEWoceAnoM7TBKt/giphy.gif)
 
 ## License
