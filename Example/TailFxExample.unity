@@ -296,7 +296,7 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   materialAttribute: _Color
-  colorizeOnStart: 0
+  colorizeOnStart: 1
 --- !u!1 &871008303
 GameObject:
   m_ObjectHideFlags: 0
