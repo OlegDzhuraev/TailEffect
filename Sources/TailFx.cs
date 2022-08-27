@@ -1,13 +1,16 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace InsaneOne.TailEffect
 {
+    public enum TailAxis { TwoD, ThreeD }
+    public enum TailStyle { Hard, Stretchy, Combined }
+    
     public class TailFx : MonoBehaviour
     {
-        public enum TailAxis { TwoD, ThreeD }
-        public enum TailStyle { Hard, Stretchy, Combined }
-
+        public event Action Loaded;
+        
         [SerializeField] GameObject headPrefab;
         [SerializeField] GameObject segmentPrefab;
         [SerializeField] GameObject tailPrefab;
@@ -19,40 +22,48 @@ namespace InsaneOne.TailEffect
         [SerializeField, Range(0f, 100f)] float spaceBetween = 1f;
         [SerializeField] bool rotateToPrevious = true;
 
+        public List<Transform> Parts => parts;
+        
         readonly List<Transform> parts = new List<Transform>();
+        Transform head;
 
         void Start()
         {
-            parts.Add(MakePart(headPrefab).transform);
+            head = MakePart(headPrefab).transform;
+            Parts.Add(head);
 
-            for (int i = 0; i < segments; i++)
-                parts.Add(MakePart(segmentPrefab).transform);
+            for (var i = 0; i < segments; i++)
+                Parts.Add(MakePart(segmentPrefab).transform);
 
-            parts.Add(MakePart(tailPrefab).transform);
+            Parts.Add(MakePart(tailPrefab).transform);
+            
+            Loaded?.Invoke();
         }
 
         GameObject MakePart(GameObject prefab) => Instantiate(prefab, transform.position, Quaternion.identity);
 
         void Update()
         {
-            parts[0].transform.position = transform.position;
-            parts[0].transform.rotation = transform.rotation;
+            head.position = transform.position;
+            head.rotation = transform.rotation;
             
-            for (var i = 1; i < parts.Count; i++)
+            for (var i = 1; i < Parts.Count; i++)
             {
-                var previous = parts[i - 1];
-                var self = parts[i];
-
+                var previous = Parts[i - 1];
+                var self = Parts[i];
+                
+                var previousPos = previous.position;
+                
                 if (style == TailStyle.Hard || style == TailStyle.Combined)
                 {
-                    var direction = (previous.position - self.position).normalized;
-                    self.position = previous.position - direction * spaceBetween;
+                    var direction = (previousPos - self.position).normalized;
+                    self.position = previousPos - direction * spaceBetween;
                 }
                 
                 if (style == TailStyle.Stretchy || style == TailStyle.Combined)
                 { 
-                    var offsetDirection = GetDirection(rotateToPrevious ? previous : parts[0]);
-                    var targetPos = previous.position - offsetDirection * spaceBetween;
+                    var offsetDirection = GetDirection(rotateToPrevious ? previous : Parts[0]);
+                    var targetPos = previousPos - offsetDirection * spaceBetween;
                     self.position = Vector3.Lerp(self.position, targetPos, Time.smoothDeltaTime * stretchySpeed);
                 }
 
@@ -75,8 +86,8 @@ namespace InsaneOne.TailEffect
                 _ => default
             };
         }
-        
-        void LookAt2D(Transform tr, Vector3 position)
+
+        static void LookAt2D(Transform tr, Vector3 position)
         {
             var direction = (position - tr.position).normalized;
             tr.rotation = Quaternion.LookRotation(Vector3.forward, direction);
