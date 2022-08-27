@@ -29,19 +29,17 @@ namespace InsaneOne.TailEffect
 
         void Start()
         {
-            head = MakePart(headPrefab).transform;
+            head = MakePart(headPrefab);
             Parts.Add(head);
 
             for (var i = 0; i < segments; i++)
-                Parts.Add(MakePart(segmentPrefab).transform);
+                Parts.Add(MakePart(segmentPrefab));
 
-            Parts.Add(MakePart(tailPrefab).transform);
+            Parts.Add(MakePart(tailPrefab));
             
             Loaded?.Invoke();
         }
-
-        GameObject MakePart(GameObject prefab) => Instantiate(prefab, transform.position, Quaternion.identity);
-
+        
         void Update()
         {
             head.position = transform.position;
@@ -77,6 +75,8 @@ namespace InsaneOne.TailEffect
             }
         }
         
+        Transform MakePart(GameObject prefab) => Instantiate(prefab, transform.position, Quaternion.identity).transform;
+
         Vector3 GetDirection(Transform tr)
         {
             return followAxis switch
